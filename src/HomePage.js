@@ -2,22 +2,22 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
 export const HomePage = () => {
-  const [userArticles, setUserArticles] = useState([])
-
-  const getPosts = async () => {
-    try {
-      const userPosts = await axios.get(
-        'https://conduit.productionready.io/api/articles?limit=10'
-      )
-      setUserArticles(userPosts)
-    } catch (err) {
-      console.error(err.message)
-    }
-  }
+  const [requestState, setRequestState] = useState('idle')
+  const [articles, setArticles] = useState([])
 
   useEffect(() => {
-    getPosts()
-  })
+    setRequestState('pending')
+
+    axios
+      .get('https://conduit.productionready.io/api/articles')
+      .then(res => res.data.articles)
+      .then(setArticles)
+      .then(() => setRequestState('success'))
+      .catch(err => {
+        setRequestState('failed')
+        console.error(err)
+      })
+  }, [])
 
   return (
     <>
@@ -47,31 +47,35 @@ export const HomePage = () => {
                 </ul>
               </div>
 
-              {userArticles.data.articles.map(article => {
-                return <h2>{article.title}</h2>
-              })}
-
-              {/* <div className="article-preview">
-                <div className="article-meta">
-                  <a href="profile.html">
-                    <img src="http://i.imgur.com/Qr71crq.jpg" />
-                  </a>
-                  <div className="info">
-                    <a href="" className="author">
-                      Eric Simons
-                    </a>
-                    <span className="date">January 20th</span>
-                  </div>
-                  <button className="btn btn-outline-primary btn-sm pull-xs-right">
-                    <i className="ion-heart"></i> 29
-                  </button>
-                </div>
-                <a href="" className="preview-link">
-                  <h1>How to build webapps that scale</h1>
-                  <p>This is the description for the post.</p>
-                  <span>Read more...</span>
-                </a>
-              </div> */}
+              {requestState === 'pending' ? (
+                <h2>Loading...</h2>
+              ) : (
+                articles.map(article => {
+                  return (
+                    <div className="article-preview">
+                      <div className="article-meta">
+                        <a href="profile.html">
+                          <img src="http://i.imgur.com/Qr71crq.jpg" />
+                        </a>
+                        <div className="info">
+                          <a href="" className="author">
+                            Eric Simons
+                          </a>
+                          <span className="date">January 20th</span>
+                        </div>
+                        <button className="btn btn-outline-primary btn-sm pull-xs-right">
+                          <i className="ion-heart"></i> 29
+                        </button>
+                      </div>
+                      <a href="" className="preview-link">
+                        <h1>{article.title}</h1>
+                        <p>This is the description for the post.</p>
+                        <span>Read more...</span>
+                      </a>
+                    </div>
+                  )
+                })
+              )}
             </div>
 
             <div className="col-md-3">
