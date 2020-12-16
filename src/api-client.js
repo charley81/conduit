@@ -26,3 +26,18 @@ export const loginUser = credentials =>
 
     return response.data.user
   })
+
+export const createArticle = () =>
+  client
+    .post('/articles', {
+      article: {
+        title: 'How to train your dragon',
+        description: 'Ever wonder how?',
+        body: 'You have to believe',
+        tagList: ['reactjs', 'angularjs', 'dragons'],
+      },
+    })
+    .then(res => {
+      console.log(res)
+    })
+    .catch(err => console.error(err))
