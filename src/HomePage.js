@@ -4,6 +4,19 @@ import axios from 'axios'
 export const HomePage = () => {
   const [requestState, setRequestState] = useState('idle')
   const [articles, setArticles] = useState([])
+  const [tags, setTags] = useState([])
+
+  useEffect(() => {
+    setRequestState('pending')
+
+    axios
+      .get('https://conduit.productionready.io/api/tags')
+      .then(res => res.data.tags)
+      .then(setTags)
+      .catch(err => {
+        console.error(err)
+      })
+  }, [])
 
   useEffect(() => {
     setRequestState('pending')
@@ -52,7 +65,7 @@ export const HomePage = () => {
               ) : (
                 articles.map(article => {
                   return (
-                    <div className="article-preview">
+                    <div className="article-preview" key={article.slug}>
                       <div className="article-meta">
                         <a href="profile.html">
                           <img src={article.author.image} />
@@ -81,32 +94,16 @@ export const HomePage = () => {
             <div className="col-md-3">
               <div className="sidebar">
                 <p>Popular Tags</p>
-
                 <div className="tag-list">
-                  <a href="" className="tag-pill tag-default">
-                    programming
-                  </a>
-                  <a href="" className="tag-pill tag-default">
-                    javascript
-                  </a>
-                  <a href="" className="tag-pill tag-default">
-                    emberjs
-                  </a>
-                  <a href="" className="tag-pill tag-default">
-                    angularjs
-                  </a>
-                  <a href="" className="tag-pill tag-default">
-                    react
-                  </a>
-                  <a href="" className="tag-pill tag-default">
-                    mean
-                  </a>
-                  <a href="" className="tag-pill tag-default">
-                    node
-                  </a>
-                  <a href="" className="tag-pill tag-default">
-                    rails
-                  </a>
+                  {tags.map(tag => {
+                    return tag.length ? (
+                      <a key={tag} href={tag} className="tag-pill tag-default">
+                        {tag}
+                      </a>
+                    ) : (
+                      ''
+                    )
+                  })}
                 </div>
               </div>
             </div>

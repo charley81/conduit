@@ -27,14 +27,14 @@ export const loginUser = credentials =>
     return response.data.user
   })
 
-export const createArticle = () =>
+export const createArticle = ({ title, description, body, tags }) =>
   client
     .post('/articles', {
       article: {
-        title: 'How to train your dragon',
-        description: 'Ever wonder how?',
-        body: 'You have to believe',
-        tagList: ['reactjs', 'angularjs', 'dragons'],
+        title,
+        description,
+        body,
+        tagList: tags,
       },
     })
     .then(res => {

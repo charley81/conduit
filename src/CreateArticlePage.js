@@ -1,47 +1,63 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { createArticle } from './api-client'
 
 export const CreateArticlePage = () => {
+  const [title, setTitle] = useState('')
+  const [description, setDescription] = useState('')
+  const [body, setBody] = useState('')
+  const [tags, setTags] = useState([])
+
+  async function handleSubmit() {
+    try {
+      await createArticle({ title, description, body, tags })
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   return (
-    <div class="editor-page">
-      <div class="container page">
-        <div class="row">
-          <div class="col-md-10 offset-md-1 col-xs-12">
-            <form>
+    <div className="editor-page">
+      <div className="container page">
+        <div className="row">
+          <div className="col-md-10 offset-md-1 col-xs-12">
+            <form onSubmit={handleSubmit}>
               <fieldset>
-                <fieldset class="form-group">
+                <fieldset className="form-group">
                   <input
                     type="text"
-                    class="form-control form-control-lg"
+                    className="form-control form-control-lg"
                     placeholder="Article Title"
+                    onChange={e => setTitle(e.target.value)}
                   />
                 </fieldset>
-                <fieldset class="form-group">
+                <fieldset className="form-group">
                   <input
                     type="text"
-                    class="form-control"
+                    className="form-control"
                     placeholder="What's this article about?"
+                    onChange={e => setDescription(e.target.value)}
                   />
                 </fieldset>
-                <fieldset class="form-group">
+                <fieldset className="form-group">
                   <textarea
-                    class="form-control"
+                    className="form-control"
                     rows="8"
                     placeholder="Write your article (in markdown)"
+                    onChange={e => setBody(e.target.value)}
                   ></textarea>
                 </fieldset>
-                <fieldset class="form-group">
+                <fieldset className="form-group">
                   <input
                     type="text"
-                    class="form-control"
+                    className="form-control"
                     placeholder="Enter tags"
+                    onChange={e => setTags(e.target.value)}
                   />
-                  <div class="tag-list"></div>
+                  <div className="tag-list"></div>
                 </fieldset>
                 <button
-                  class="btn btn-lg pull-xs-right btn-primary"
-                  type="button"
-                  onClick={createArticle}
+                  className="btn btn-lg pull-xs-right btn-primary"
+                  type="submit"
                 >
                   Publish Article
                 </button>

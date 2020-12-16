@@ -1,19 +1,19 @@
-import React from "react";
-import { Link, useHistory } from "react-router-dom";
+import React from 'react'
+import { Link, useHistory } from 'react-router-dom'
 
-import { AuthContext } from "./Auth";
+import { AuthContext } from './Auth'
 
 export function LoginPage() {
-  const history = useHistory();
-  const { signInUser } = React.useContext(AuthContext);
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
+  const history = useHistory()
+  const { signInUser } = React.useContext(AuthContext)
+  const [email, setEmail] = React.useState('')
+  const [password, setPassword] = React.useState('')
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = e => {
+    e.preventDefault()
 
-    signInUser({ email, password }).then(() => history.push("/"));
-  };
+    signInUser({ email, password }).then(() => history.push('/'))
+  }
 
   return (
     <div className="auth-page">
@@ -35,7 +35,7 @@ export function LoginPage() {
                     type="email"
                     placeholder="Email"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={e => setEmail(e.target.value)}
                   />
                 </fieldset>
 
@@ -45,7 +45,7 @@ export function LoginPage() {
                     type="password"
                     placeholder="Password"
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={e => setPassword(e.target.value)}
                   />
                 </fieldset>
 
@@ -62,5 +62,5 @@ export function LoginPage() {
         </div>
       </div>
     </div>
-  );
+  )
 }
